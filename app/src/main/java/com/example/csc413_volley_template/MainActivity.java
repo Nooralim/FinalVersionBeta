@@ -1,6 +1,7 @@
 package com.example.csc413_volley_template;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -42,9 +43,11 @@ public class MainActivity extends AppCompatActivity
     RecyclerView recyclerView;
     //-----------------------------------------
     private Button b;
-    private TextView t;
+  //  private TextView t;
     private LocationManager locationManager;
     private LocationListener listener;
+    private Double lat;
+    private Double lon;
 
 
 
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         //-------------------------------------------------------------------------------------------
-        t = (TextView) findViewById(R.id.textView);
+        //t = (TextView) findViewById(R.id.textView);
         b = (Button) findViewById(R.id.button);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -95,7 +98,9 @@ public class MainActivity extends AppCompatActivity
             //-------------------------------------------------------------------------------
             @Override
             public void onLocationChanged(Location location) {
-                t.append("\n " + location.getLongitude() + " " + location.getLatitude());
+              //  t.append("\n " + location.getLongitude() + " " + location.getLatitude());
+                lat = location.getLatitude();
+                lon = location.getLongitude();
 
             }
 
@@ -118,7 +123,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * create options from menu/menu_activity_main.xml where we have searchView as one of the menu items
-     * @param menu
+     * //@param menu
      * @return
      */
 //---------------------------------------------------------------------
@@ -151,6 +156,18 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 //noinspection MissingPermission
                 locationManager.requestLocationUpdates("gps", 5000, 0, listener);
+
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+
+
+                String lonn = String.valueOf(lon);
+                String latt = String.valueOf(lat);
+                String text = "Latitude: "+ latt + "\n"+" Longitude: "+lonn;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
             }
         });
     }
